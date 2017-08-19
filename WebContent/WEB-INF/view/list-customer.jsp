@@ -26,7 +26,13 @@
 			<!-- put new button: Add Customer -->
 			<input type="button" value="Add Customer"
 				onclick="window.location.href='showFormForAdd'; return false;"
-				class="add-button" />
+				class="add-button" /><br/>
+			
+			<!-- put a search button: Search -->
+			<form action="search" method="GET">
+				<input type="submit" value="Search by last name" class="add-button" />
+				<input name="name" type="text">
+			</form>
 
 			<!-- add out html table here -->
 

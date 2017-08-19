@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.andrew.springdemo.dao.CustomerDAO;
 import com.andrew.springdemo.entity.Customer;
@@ -43,4 +44,13 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		customerDAO.deleteCustomer(theId);
 	}
+
+	@Transactional
+	@Override
+	public List<Customer> searchCustomer(Model theModel, String name) {
+		
+		return customerDAO.searchCustomer(theModel,name);
+	}
+
+	
 }

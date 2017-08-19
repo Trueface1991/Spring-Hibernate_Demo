@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import com.andrew.springdemo.validation.ValidEmail;
+import com.sun.istack.internal.NotNull;
 
 @Entity
 @Table(name="customer")
@@ -16,12 +20,18 @@ public class Customer {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	@NotNull
+	@Size(min=4, max=100, message="Must be between 4 and 100 character")
 	@Column(name="first_name")
 	private String firstName;
 	
+	@NotNull
+	@Size(min=4, max=100, message="Must be between 4 and 100 character.")
 	@Column(name="last_name")
 	private String lastName;
 
+	@NotNull
+	@ValidEmail(message="This email is not valid.")
 	@Column(name="email")
 	private String email;
 	

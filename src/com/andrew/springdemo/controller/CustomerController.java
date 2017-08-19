@@ -1,12 +1,15 @@
 package com.andrew.springdemo.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.util.List;
 
-import javax.persistence.Id;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +51,11 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/saveCustomer")
-	public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
+	public String saveCustomer(@Valid @ModelAttribute("customer") Customer theCustomer, BindingResult result) {
+		
+		if (result.hasErrors()) {
+			return "customer-form";
+		}
 		
 		// save the customer using our service
 		customerService.saveCustomer(theCustomer);
@@ -74,6 +81,20 @@ public class CustomerController {
 		
 		// delete the customer
 		customerService.deleteCustomer(theId);
+		
+		return "redirect:/customer/list";
+	}
+	
+	@GetMapping("/search")
+	public String searchCustomer(Model theModel, @RequestParam("name") String name) {
+		
+		if (name!=null) {
+		List<Customer> customers = customerService.searchCustomer(theModel, name);
+		
+		theModel.addAttribute("customers", customers);
+		
+		return "list-customer";
+		}
 		
 		return "redirect:/customer/list";
 	}

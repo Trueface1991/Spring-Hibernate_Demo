@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.andrew.springdemo.entity.Customer;
 
@@ -75,6 +76,25 @@ public class CustomerDAOImpl implements CustomerDAO {
 		theQuery.setParameter("customerId", theId);
 		
 		theQuery.executeUpdate();
+	}
+
+
+	@Override
+	public List<Customer> searchCustomer(Model theModel, String name) {
+		
+		
+		// get the current hibernate session
+		Session currentSession = SessionFactory.getCurrentSession();
+		
+		// create a query
+		Query<Customer> theQuery = currentSession.createQuery("from Customer where lastName like :name", Customer.class);
+		
+		theQuery.setParameter("name", name + "%");
+		
+		// execute the query and get the result list
+		List<Customer> customers = theQuery.getResultList();
+		
+		return customers;
 	}
 
 
